@@ -1,2 +1,2 @@
 # PPP
-my progress repository on the PPP discipline ( procedural programming principles)
+my progress repository of PPP discipline ( procedural programming principles)
