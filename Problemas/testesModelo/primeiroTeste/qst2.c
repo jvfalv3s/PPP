@@ -5,7 +5,26 @@
 #include <stdio.h>
 
 int main(){
-    char input[] = {"teste 2 de 30 programacao 40"};
+    printf("Digite uma frase: ");
+    char frase[100];
+    fgets(frase, 100, stdin);
+    int i = 0;
+    int soma = 0;
+    while(frase[i] != '\0'){
+        if(frase[i] >= '0' && frase[i] <= '9'){
+            int num = 0;
+            while(frase[i] >= '0' && frase[i] <= '9'){
+                num = num*10 + (frase[i] - '0');
+                i++;
+            }
+            soma += num;
+        }else{
+            i++;
+        }
+    }
+
+    printf("Soma dos numeros: %d\n", soma);
+
     
     return 0;
 }
