@@ -35,3 +35,17 @@ void insere (tipoFila *fila, struct pessoa p1){
     }
 }
 
+struct pessoa retira (tipoFila *fila){
+    noFila * temp_ptr;
+    struct pessoa p1;
+    if (!vazia(fila)){
+        temp_ptr = fila->inicio;
+        p1 = temp_ptr->pessoaFila;
+        fila->inicio = fila->inicio->prox;
+        if (vazia(fila))
+            fila->fim = NULL;
+        free(temp_ptr);
+        return p1;
+    }
+}
+
