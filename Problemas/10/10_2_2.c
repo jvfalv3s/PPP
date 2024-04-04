@@ -1,0 +1,2 @@
+/*Crie um programa que determine para o conjunto de avaliacoes de 20 alunos de uma turma qual foi a melhor classificacao.
+Para cada aluno e introduzida a nota do teste, do projeto e dos trabalhos praticos. Use alocacao dinamica de memoria*/
