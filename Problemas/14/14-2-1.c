@@ -12,19 +12,92 @@ ou em sentido inverso).*/
 #include<string.h>
 #define TAM 10
 
+int maiorPalavra(FILE *f){
+    char *s;
+    int maior = 0;
+    int tam = 0;
+
+    s = (char *) malloc(TAM * sizeof(char));
+    if(s == NULL){
+        printf("Erro ao alocar memória\n");
+        return 1;
+    }
+
+    while(fgets(s, TAM, f) != NULL){
+        tam = strlen(s) - 1;
+        if(tam > maior){
+            maior = tam;
+        }
+    }
+
+    free(s);
+    return maior;
+}
+
+void palin(FILE *f, FILE *f2){
+    char *s;
+    int i, j, tam;
+    int palin = 1;
+
+    s = (char *) malloc(TAM * sizeof(char));
+    if(s == NULL){
+        printf("Erro ao alocar memória\n");
+        return;
+    }
+
+    while(fgets(s, TAM, f) != NULL){
+        tam = strlen(s) - 1;
+        for(i = 0, j = tam - 1; i < tam / 2; i++, j--){
+            if(s[i] != s[j]){
+                palin = 0;
+                break;
+            }
+        }
+        if(palin){
+            fprintf(f2, "%s", s);
+        }
+        palin = 1;
+    }
+    free(s);
+}
+
 int main(){
     char *s;
     FILE *f;
+    //FILE *f2;
 
     f = fopen("palavras.txt", "w");
     if(f == NULL){
-        printf("Erro ao abrir ficheiro.\n");
-        return -1;
+        printf("Erro ao abrir o ficheiro\n");
+        return 1;
     }
-    while(scanf("%ms", &s) > 0){
-        printf("String \"%s\"\n", s);
-        free(s);
+
+    s = (char *) malloc(TAM * sizeof(char));
+    if(s == NULL){
+        printf("Erro ao alocar memória\n");
+        return 1;
     }
+
+    printf("Introduza palavras para guardar no ficheiro (termina com linha vazia):\n");
+    do{
+        fgets(s, TAM, stdin);
+        if(s[0] != '\n'){
+            fprintf(f, "%s", s);
+        }
+    }while(s[0] != '\n');
+
     fclose(f);
+    free(s);
+    
+    f = fopen("palavras.txt", "r");
+    if(f == NULL){
+        printf("Erro ao abrir o ficheiro\n");
+        return 1;
+    }
+
+    printf("A maior palavra tem %d carateres\n", maiorPalavra(f));
+
+    fclose(f);
+
     return 0;
 }

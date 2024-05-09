@@ -22,7 +22,7 @@ void destroi (tipoFila *fila){
     fila->fim = NULL;
 }
 void insere (tipoFila *fila, struct pessoa p1){
-    noFila * temp_ptr
+    noFila * temp_ptr;
     temp_ptr = (noFila *) malloc(sizeof(noFila));
     if (temp_ptr != NULL){
         temp_ptr->pessoaFila =p1;
