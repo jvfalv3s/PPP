@@ -16,3 +16,5 @@ typedef struct {
     noFila *inicio;
     noFila *fim;
 }tipoFila;
+
+#endif
