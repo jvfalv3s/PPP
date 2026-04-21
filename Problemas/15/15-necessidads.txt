@@ -1,1 +1,0 @@
-Criar apenas um .h para todos os exercicios, tendo que nao ir e voltar a criar os headers toda hora.
