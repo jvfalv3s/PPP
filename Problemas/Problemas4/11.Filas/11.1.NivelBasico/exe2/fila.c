@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "fila.h"
 
 void create(struct queue *q) {
@@ -11,13 +12,13 @@ int empty(const struct queue *q) {
     return q->inicio == NULL;
 }
 
-int insert(struct queue *q, double x) {
+int insert(struct queue *q, const char *s) {
     struct queue_node *novo = (struct queue_node *) malloc(sizeof(struct queue_node));
 
     if (novo == NULL)
         return 0;
 
-    novo->value = x;
+    strcpy(novo->str, s);
     novo->prox = NULL;
 
     if (empty(q))
@@ -33,7 +34,7 @@ void print_queue(const struct queue *q) {
     struct queue_node *aux = q->inicio;
 
     while (aux != NULL) {
-        printf("%.2lf\n", aux->value);
+        printf("%s\n", aux->str);
         aux = aux->prox;
     }
 }

@@ -2,7 +2,7 @@
 #define FILA_H
 
 struct queue_node {
-    double value;
+    float value;
     struct queue_node *prox;
 };
 
@@ -13,8 +13,10 @@ struct queue {
 
 void create(struct queue *q);
 int empty(const struct queue *q);
-int insert(struct queue *q, double x);
+int insert(struct queue *q, float x);
 void print_queue(const struct queue *q);
 void clean(struct queue *q);
+
+int queue_to_vector(const struct queue *q, float v[]);
 
 #endif

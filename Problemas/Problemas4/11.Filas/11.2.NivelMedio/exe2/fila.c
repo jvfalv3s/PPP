@@ -11,7 +11,7 @@ int empty(const struct queue *q) {
     return q->inicio == NULL;
 }
 
-int insert(struct queue *q, double x) {
+int insert(struct queue *q, float x) {
     struct queue_node *novo = (struct queue_node *) malloc(sizeof(struct queue_node));
 
     if (novo == NULL)
@@ -33,7 +33,7 @@ void print_queue(const struct queue *q) {
     struct queue_node *aux = q->inicio;
 
     while (aux != NULL) {
-        printf("%.2lf\n", aux->value);
+        printf("%.2f\n", aux->value);
         aux = aux->prox;
     }
 }
@@ -45,4 +45,17 @@ void clean(struct queue *q) {
         free(tmp);
     }
     q->fim = NULL;
+}
+
+int queue_to_vector(const struct queue *q, float v[]) {
+    int i = 0;
+    struct queue_node *aux = q->inicio;
+
+    while (aux != NULL) {
+        v[i] = aux->value;
+        i++;
+        aux = aux->prox;
+    }
+
+    return i;
 }
