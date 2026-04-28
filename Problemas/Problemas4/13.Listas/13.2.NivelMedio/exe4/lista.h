@@ -1,6 +1,6 @@
 #ifndef LISTA_H
 #define LISTA_H
-
+/*
 struct element {
     int value;
 };
@@ -31,6 +31,6 @@ int pop(struct stack_node **p, int *x);
 void print_stack(const struct stack_node *p);
 void clean(struct stack_node **p);
 
-
+*/
 
 #endif
