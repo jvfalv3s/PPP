@@ -27,4 +27,6 @@ o struct aluno deve ter um "id" para associar as depesas, um ponteiro especifico
 
 //struct da lista de despesas, com um ponteiro para o proximo despesa e um id do aluno associado
 
+//aula 2 dia 7/5 vou implementar as estruturas de dados e funcoes basicas aka a lista e os structs + funcoes de criar a lista e remover nodes.
+
 #endif

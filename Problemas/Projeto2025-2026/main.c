@@ -2,6 +2,8 @@
 
 int main(){
 
+    //inicializar a lista de alunos, carregar os dados do ficheiro para a memoria
+
     //aqui vai ter o menu e as chamadas das funcoes
 
     //o menu vai ser um loop infinito, usando um while(1).
