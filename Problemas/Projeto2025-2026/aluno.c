@@ -19,6 +19,12 @@
 
 //se eu vou fazer uma lista de despesas, preciso de funcoes para as despesas tambem?
 
+//pensar na estrutura do ficheiro, se for de texto (que eu nao estou a favor) eu preciso ver o formato das linhas.
+
+//funcao de ordenacao pre-search ( ele ja pressupoe que esta em ordem alfabetica)
+
+//pensar em como carregar a conta de um aluno que gastou uma quantia especifica.
+
 int exemplo(){
     return 0;
 }
