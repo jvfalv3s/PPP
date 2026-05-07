@@ -1,3 +1,7 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include "aluno.h"
+
 //manutencao e implementacao das funcoes de listas e alunos
 
 
@@ -15,7 +19,6 @@
 //efetuar uma despesa de um aluno, verificar se o aluno existe, se tem saldo suficiente, atualizar o saldo e registrar a despesa
 
 //carregar o saldo de um aluno, verificar se o aluno existe, atualizar o saldo e registrar a transacao
-
 
 //se eu vou fazer uma lista de despesas, preciso de funcoes para as despesas tambem?
 

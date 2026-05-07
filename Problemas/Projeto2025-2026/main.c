@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "aluno.h"
+
 //main do codigo
 
 int main(){
@@ -8,22 +12,23 @@ int main(){
 
     //o menu vai ser um loop infinito, usando um while(1).
 
-    //opcao 1 novo aluno
+    /*
+    //menu estatico
+     while(1){
+        printf("Menu:\n");
+        //funcoes do menu (prototipos das funcoes no header)
 
-    //opcao 2 eliminar aluno
-
-    //opcao 3 listar alunos
-
-    //opcao 4 registrar despesa
-
-    //opcao 5 carregar saldo
-
-    //opcao 6 gravar dados para o ficheiro
-
-    //opcao 7 sair do programa
+        //aluno novo
+        //eliminar aluno
+        //listar alunos
+        //registrar despesa
+        //carregar saldo
+        //gravar dados para o ficheiro
+        //sair do programa
+    }
+    */
 
     //a principio pensei em ficheiro de texto, mas como vou colocar listas, faz mais sentido usar ficheiros binarios, para guardar as estruturas.
-
 
     return 0;
 }
