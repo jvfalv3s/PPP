@@ -26,7 +26,7 @@
 
 //funcao de ordenacao pre-search ( ele ja pressupoe que esta em ordem alfabetica)
 
-//pensar em como carregar a conta de um aluno que gastou uma quantia especifica.
+//pensar em como carregar a conta de um aluno que gastou uma quantia especifica.??????
 
 int exemplo(){
     return 0;
