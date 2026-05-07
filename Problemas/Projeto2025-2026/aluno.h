@@ -28,7 +28,7 @@ struct lista_alunos{
     struct lista_alunos *next;
 };
 
-//struct da despesa (descricao, valor, data, aluno associado) ainda decidindo se vou ter uma lista de despesas ou se vou associar as despess por aluno usando ponteiros
+//struct da despesa (descricao, valor, data, aluno associado) ainda decidindo se vou ter uma lista de despesas ou se vou associar as despesas por aluno usando ponteiros, aka cad aluno tem uma lista de despesas associada.
 
 struct despesas{
     float valor;//excessao a regra do char
@@ -74,10 +74,16 @@ void print_lista_despesas_aluno(struct lista_despesas *list, char *id_aluno);
 //carregar_conta (adicionar saldo a um aluno)
 void carregar_conta(struct lista_alunos *list, char *id_aluno, float valor);
 //procurar  alunos com despesas acima de um valor especifico, imprimir os alunos e o valor total das despesas (terei que percorrer a lista de alunos e a lista de despesas de cada aluno, comparar o valor da despesa com o valor especifico e imprimir os alunos que tiverem despesas acima desse valor)
+void procurar_plafond(struct lista_alunos *list, float valor); //tem que percorrer a lista de alunos e a lista de despesas de cada aluno, comparar o valor da despesa com o valor especifico e imprimir os alunos que tiverem despesas acima desse valor
+
+
+//----funcoes de ficheiros----//
 //gravar_dados (gravar os dados da lista de alunos e despesas para um ficheiro binario) para proxima semana// to fraco de ficheiros
 //abrir ficheiro(com as infos de ambas as listas?) -> ler os dados do ficheiro e carregar para a memoria, vai ser chamada bastante nas funcoes de comparacao
+//----------------------------//
 
-//funcoes de integridade de dados -> verificacao de erros e excessoes:
+
+//----funcoes de integridade de dados----//
 //verificar se o aluno existe antes de eliminar, listar ou carregar conta
 void verificar_aluno_existe(struct lista_alunos *list, char *key);
 //verificar se a despesa existe antes de eliminar
@@ -86,6 +92,6 @@ void verificar_despesa_existe(struct lista_despesas *list, char *key);
 void verificar_valor(float valor);
 //verificar se o aluno tem saldo suficiente antes de efetuar a despesa, aplicar mensagens de erro e nao deixar o programa sair em caso de erro, por exemplo, se o aluno nao existe, imprimir uma mensagem de erro e retornar ao menu
 void verificar_saldo_suficiente(struct lista_alunos *list, char *id_aluno, float valor_despesa);
-
+//---------------------------------------//
 
 #endif

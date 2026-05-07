@@ -2,32 +2,53 @@
 #include<stdlib.h>
 #include "aluno.h"
 
-//manutencao e implementacao das funcoes de listas e alunos
+//prototipos das funcoes:
+//create_lista_alunos
+struct lista_alunos *create_lista_alunos(void);
+//create_lista_despesas
+struct lista_despesas *create_lista_despesas(void);
+//empty
+int empty_alunos(struct lista_alunos *list);
+int empty_despesas(struct lista_despesas *list);
+//clean
+struct lista_alunos *clean_lista_alunos(struct lista_alunos *list);
+struct lista_despesas *clean_lista_despesas(struct lista_despesas *list);
+//search
+void search_alunos(struct lista_alunos *list, char *key, struct lista_alunos **previous,struct lista_alunos **current);
+void search_despesas(struct lista_despesas *list, char *key, struct lista_despesas **previous,struct lista_despesas **current);
+//delete
+void delete_aluno(struct lista_alunos *list, char *key);
+void delete_despesa(struct lista_despesas *list, char *key);
+//insert
+void insert_aluno(struct lista_alunos *list, struct aluno a1);
+void insert_despesa(struct lista_despesas *list, struct despesas d1, char *id_aluno);//atentar para qual aluno a despesa esta associada, usar o id_aluno para comparar com o numero do aluno na struct aluno e assim associar a despesa ao aluno correto
+//print_aluno
+void print_aluno(struct aluno a);
+//print_lista_alunos em ordem alfabetica
+void print_lista_alunos(struct lista_alunos *list);
+//print_despesa_aluno (printar a despesa total de um aluno, total de saldo (saldo inicial - total de despesas))
+void print_despesa_aluno(struct aluno a);
+//print_lista_despesas_aluno
+void print_lista_despesas_aluno(struct lista_despesas *list, char *id_aluno);
+//carregar_conta (adicionar saldo a um aluno)
+void carregar_conta(struct lista_alunos *list, char *id_aluno, float valor);
+//procurar  alunos com despesas acima de um valor especifico, imprimir os alunos e o valor total das despesas (terei que percorrer a lista de alunos e a lista de despesas de cada aluno, comparar o valor da despesa com o valor especifico e imprimir os alunos que tiverem despesas acima desse valor)
+void procurar_plafond(struct lista_alunos *list, float valor); //tem que percorrer a lista de alunos e a lista de despesas de cada aluno, comparar o valor da despesa com o valor especifico e imprimir os alunos que tiverem despesas acima desse valor
 
 
-//protecao dos dados nas funcoes e importante, aka, a data existe? os valores de compra e venda estao corretos?
+//----funcoes de ficheiros----//
+//gravar_dados (gravar os dados da lista de alunos e despesas para um ficheiro binario) para proxima semana// to fraco de ficheiros
+//abrir ficheiro(com as infos de ambas as listas?) -> ler os dados do ficheiro e carregar para a memoria, vai ser chamada bastante nas funcoes de comparacao
+//----------------------------//
 
-//lidar com erros e excessoes aplicando mensagens de erro, nao deixar o programa sair.
 
-
-//funcao para criar um novo aluno, alocar memoria e preencher os dados
-
-//funcao para eliminar um aluno, liberar memoria e atualizar a lista
-
-//funcao para listar os alunos, percorrer a lista e imprimir os dados (em ordem alfabetica)
-
-//efetuar uma despesa de um aluno, verificar se o aluno existe, se tem saldo suficiente, atualizar o saldo e registrar a despesa
-
-//carregar o saldo de um aluno, verificar se o aluno existe, atualizar o saldo e registrar a transacao
-
-//se eu vou fazer uma lista de despesas, preciso de funcoes para as despesas tambem?
-
-//pensar na estrutura do ficheiro, se for de texto (que eu nao estou a favor) eu preciso ver o formato das linhas.
-
-//funcao de ordenacao pre-search ( ele ja pressupoe que esta em ordem alfabetica)
-
-//pensar em como carregar a conta de um aluno que gastou uma quantia especifica.??????
-
-int exemplo(){
-    return 0;
-}
+//----funcoes de integridade de dados----//
+//verificar se o aluno existe antes de eliminar, listar ou carregar conta
+void verificar_aluno_existe(struct lista_alunos *list, char *key);
+//verificar se a despesa existe antes de eliminar
+void verificar_despesa_existe(struct lista_despesas *list, char *key);
+//verificar se o valor da despesa e do carregamento de conta estao corretos antes de efetuar a operacao
+void verificar_valor(float valor);
+//verificar se o aluno tem saldo suficiente antes de efetuar a despesa, aplicar mensagens de erro e nao deixar o programa sair em caso de erro, por exemplo, se o aluno nao existe, imprimir uma mensagem de erro e retornar ao menu
+void verificar_saldo_suficiente(struct lista_alunos *list, char *id_aluno, float valor_despesa);
+//---------------------------------------//
