@@ -1,0 +1,3 @@
+Esta e uma linha muito grande que precisa de ser repartida sem quebrar nenhuma palavra para validar o exercicio.
+Pequena linha.
+Outra linha com varias palavras e com tamanho consideravel para testar a formatacao correta.
