@@ -28,8 +28,7 @@ struct list_node *clean(struct list_node *list) {
 }
 
 // Assumes the list is sorted by name
-void search(struct list_node *list, char *key, struct list_node **previous,
-            struct list_node **current) {
+void search(struct list_node *list, char *key, struct list_node **previous, struct list_node **current) {
   *previous = list;
   *current = list->next;
   while ((*current) != NULL && strcmp((*current)->per.name, key) < 0) {

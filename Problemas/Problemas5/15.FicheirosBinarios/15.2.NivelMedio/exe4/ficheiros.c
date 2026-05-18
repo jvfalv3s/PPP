@@ -6,34 +6,33 @@
 int mostrar_nomes_por_letra(const char *ficheiro, char letra)
 {
     FILE *f = fopen(ficheiro, "rb");
-    Indice idx;
-    Pessoa p;
-    int alvo;
-    long inicio;
+    //ler o ficheiro binario e mostrar ao utilizador quala a letra do alfabeto cujos nomes quer ver;
+    //criar um indice para o ficheiro, onde cada letra conta o offset da primeira letra do nome (como na struct indice valur alfabeto)
 
-    if (f == NULL) {
+
+    //verificar a tipagem do ficheiro binario, nesse exemplo comparar o vetor com o alfabeto do struct no header.
+
+    fclose(f);
+    return 1;
+}
+
+int criar_nomes_binario(const char *ficheiro)
+{
+    FILE *f = fopen(ficheiro, "wb");
+    if (!f) {
         return 0;
     }
 
-    if (fread(&idx, sizeof(Indice), 1, f) != 1) {
-        fclose(f);
-        return 0;
-    }
+    Pessoa pessoas[] = {
+        {"Alice", 1990},
+        {"Bob", 1985},
+        {"Charlie", 1992},
+        {"David", 1988},
+        {"Eve", 1991}
+    };
 
-    alvo = toupper((unsigned char)letra) - 'A';
-    if (alvo < 0 || alvo > 25 || idx.offsets[alvo] == 0) {
-        fclose(f);
-        return 1;
-    }
-
-    inicio = idx.offsets[alvo];
-    fseek(f, inicio, SEEK_SET);
-
-    while (fread(&p, sizeof(Pessoa), 1, f) == 1) {
-        if (toupper((unsigned char)p.nome[0]) != toupper((unsigned char)letra)) {
-            break;
-        }
-        printf("%s - %d\n", p.nome, p.ano);
+    for (size_t i = 0; i < sizeof(pessoas) / sizeof(pessoas[0]); i++) {
+        fwrite(&pessoas[i], sizeof(Pessoa), 1, f);
     }
 
     fclose(f);

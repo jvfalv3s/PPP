@@ -11,10 +11,6 @@ int main(void)
         return 1;
     }
 
-    if (!mostrar_nomes_por_letra("pessoas_index.dat", letra)) {
-        printf("Erro ao abrir/ler pessoas_index.dat.\n");
-        return 1;
-    }
 
     return 0;
 }

@@ -1,0 +1,8 @@
+A Ana Maria Silva|25/02/2005|Engenharia Informatica|3|20231|100
+D 3.3|Varios|30/04/2026
+D 0.6|Cafe|05/05/2026
+D 1.2|Salgado|06/05/2026
+A Jose Pedro Santos|18/12/2007|Design e Multimedia|1|20252|50
+A Luis Francisco Pereira Reis|05/07/2007|Ciencia de Dados|1|20253|60
+D 2|Bolo|04/05/2026
+D 2.5|Chocolate|05/05/2026

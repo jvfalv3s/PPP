@@ -9,7 +9,7 @@ typedef struct {
 } Pessoa;
 
 typedef struct {
-    long offsets[26];
+    long alfabeto[26];
 } Indice;
 
 int mostrar_nomes_por_letra(const char *ficheiro, char letra);
