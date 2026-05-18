@@ -9,12 +9,10 @@ int main(){
 
     //inicializar a lista de alunos, carregar os dados do ficheiro para a memoria
     struct lista_alunos *list = create_lista_alunos();
-    struct lista_despesas *list_despesas = create_lista_despesas();
-    //aqui vai ter o menu e as chamadas das funcoes
+    struct lista_despesas *lista_despesas = create_lista_despesas();
     
      while(1){
         printf("Menu:\n");
-        //funcoes do menu (prototipos das funcoes no header)
 
         //aluno novo
         printf("1. Adicionar aluno\n");
@@ -30,6 +28,8 @@ int main(){
         printf("6. Gravar dados\n");
         //sair do programa
         printf("7. Sair\n");
+        //abrir ficheiro e carregar os dados para a memoria
+        printf("8. Abrir ficheiro\n");
     
         int opcao = getchar();
         while (getchar() != '\n');  // Limpar o buffer do input
@@ -41,11 +41,11 @@ int main(){
                 //enviar os dados para a struct aluno que envia para a funcao insert_aluno
                 struct aluno a1;
                 printf("Insira o nome do aluno: ");
-                scanf(" %99s", a1.nome);
+                scanf(" %s", a1.nome);
                 printf("Insira o curso do aluno: ");
-                scanf(" %99s", a1.curso);
+                scanf(" %s", a1.curso);
                 printf("Insira a data de nascimento do aluno (dd/mm/aaaa): ");
-                scanf(" %99s", a1.data_nascimento);
+                scanf(" %s", a1.data_nascimento);
                 printf("Insira o ano do aluno: ");
                 scanf(" %d", &a1.ano);
                 printf("Insira o numero do aluno: ");
@@ -81,8 +81,8 @@ int main(){
                 }
                 
                 printf("Insira a descricao da despesa: ");
-                scanf(" %99s", d1.descricao);
-                insert_despesa(list_despesas, d1, id_aluno);
+                scanf(" %s", d1.descricao);
+                insert_despesa(list, lista_despesas, d1, id_aluno);
                 break;
             case '5':
                 //chamar funcao para carregar saldo
@@ -104,19 +104,20 @@ int main(){
             case '6':
                 //chamar funcao para gravar dados para o ficheiro
                 //"puxar" os dados da memoria para o ficheiro.
-                //void gravar_dados(struct lista_alunos *list, struct lista_despesas *list_despesas);
+                gravar_dados(list, lista_despesas);
                 break;
             case '7':
                 //sair do programa
                 exit(0);
+            case '8':
+                //chamar funcao para abrir ficheiro e carregar os dados para a memoria
+                abrir_ficheiro(list, lista_despesas);
+                break;
             default:
                 printf("Opcao invalida. Tente novamente.\n");
         }
     
     }
-    
-
-    //a principio pensei em ficheiro de texto, mas como vou colocar listas, faz mais sentido usar ficheiros binarios, para guardar as estruturas.
 
     return 0;
 }

@@ -64,7 +64,7 @@ void delete_aluno(struct lista_alunos *list, int key);
 void delete_despesa(struct lista_despesas *list, char *key);
 //insert
 void insert_aluno(struct lista_alunos *list, struct aluno a1);
-void insert_despesa(struct lista_despesas *list, struct despesas d1, int id_aluno);//atentar para qual aluno a despesa esta associada, usar o id_aluno para comparar com o numero do aluno na struct aluno e assim associar a despesa ao aluno correto
+void insert_despesa(struct lista_alunos *lista_alunos, struct lista_despesas *list, struct despesas d1, int id_aluno);//atentar para qual aluno a despesa esta associada, usar o id_aluno para comparar com o numero do aluno na struct aluno e assim associar a despesa ao aluno correto
 //print_aluno
 void print_aluno(struct aluno a);
 //print_lista_alunos em ordem alfabetica
