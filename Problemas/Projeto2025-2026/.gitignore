@@ -1,0 +1,8 @@
+# Objetos de compilacao
+*.o
+
+# Executavel
+Projeto2025-2026
+
+# Ficheiros binarios de dados
+*.bin

@@ -30,9 +30,12 @@ int main(){
         printf("7. Sair\n");
         //abrir ficheiro e carregar os dados para a memoria
         printf("8. Abrir ficheiro\n");
+        //mostrar aluno especifico e suas despesas
+        printf("9. Mostrar aluno e despesas\n");
     
+        //ler a opcao do menu, validar a opcao e chamar a funcao correspondente
         int opcao = getchar();
-        while (getchar() != '\n');  // Limpar o buffer do input
+        limpar_buffer_stdin();
         
         switch (opcao) {
             case '1':
@@ -46,18 +49,15 @@ int main(){
                 scanf(" %s", a1.curso);
                 printf("Insira a data de nascimento do aluno (dd/mm/aaaa): ");
                 scanf(" %s", a1.data_nascimento);
-                printf("Insira o ano do aluno: ");
-                scanf(" %d", &a1.ano);
-                printf("Insira o numero do aluno: ");
-                scanf(" %d", &a1.numero);
+                ler_inteiro("Insira o ano do aluno: ", &a1.ano);
+                ler_inteiro("Insira o numero do aluno: ", &a1.numero);
                 a1.saldo = 0.0; //saldo inicial do aluno é 0
                 insert_aluno(list, a1);//chamar funcao para adicionar aluno, enviar a struct aluno para a funcao insert_aluno
                 break;
             case '2':
                 //chamar funcao para eliminar aluno
                 int key;
-                printf("Insira o numero do aluno a eliminar: ");
-                scanf(" %d", &key);
+                ler_inteiro("Insira o numero do aluno a eliminar: ", &key);
                 delete_aluno(list, key);
                 break;
             case '3':
@@ -69,29 +69,25 @@ int main(){
                 //chamar funcao para registrar despesa
                 struct despesas d1;
                 int id_aluno;
-                printf("Insira o ID do aluno: ");
-                scanf(" %d", &id_aluno);
-                printf("Insira o valor da despesa: ");
-                scanf(" %f", &d1.valor);
-                
+                ler_inteiro("Insira o ID do aluno: ", &id_aluno);
+                ler_float("Insira o valor da despesa: ", &d1.valor);
                 // Validacao de seguranca: valor nao pode ser negativo ou zero
                 if (d1.valor <= 0) {
                     printf("Erro: O valor da despesa deve ser positivo.\n");
                     break;
-                }
-                
+                } 
                 printf("Insira a descricao da despesa: ");
                 scanf(" %s", d1.descricao);
+                printf("Insira a data da despesa (dd/mm/aaaa): ");
+                scanf(" %s", d1.data);
                 insert_despesa(list, lista_despesas, d1, id_aluno);
                 break;
             case '5':
                 //chamar funcao para carregar saldo
                 int id_aluno_carregar;
                 float valor_carregar;
-                printf("Insira o ID do aluno: ");
-                scanf(" %d", &id_aluno_carregar);
-                printf("Insira o valor a carregar: ");
-                scanf(" %f", &valor_carregar);
+                ler_inteiro("Insira o ID do aluno: ", &id_aluno_carregar);
+                ler_float("Insira o valor a carregar: ", &valor_carregar);
                 
                 // Validacao de seguranca: valor nao pode ser negativo ou zero
                 if (valor_carregar <= 0) {
@@ -105,6 +101,7 @@ int main(){
                 //chamar funcao para gravar dados para o ficheiro
                 //"puxar" os dados da memoria para o ficheiro.
                 gravar_dados(list, lista_despesas);
+                //ao chamar a funcao, printar um mensagem de sucesso ou erro, dependendo do resultado da funcao gravar_dados
                 break;
             case '7':
                 //sair do programa
@@ -112,6 +109,12 @@ int main(){
             case '8':
                 //chamar funcao para abrir ficheiro e carregar os dados para a memoria
                 abrir_ficheiro(list, lista_despesas);
+                break;
+            case '9':
+                //mostrar aluno especifico e todas as suas despesas
+                int id_aluno_consulta;
+                ler_inteiro("Insira o numero do aluno: ", &id_aluno_consulta);
+                print_aluno_e_despesas(list, lista_despesas, id_aluno_consulta);
                 break;
             default:
                 printf("Opcao invalida. Tente novamente.\n");

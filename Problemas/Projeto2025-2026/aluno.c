@@ -3,7 +3,44 @@
 #include<string.h>
 #include "aluno.h"
 
-//prototipos das funcoes:
+//funcoes utilitarias de leitura (resolucao do skip ao pressionar uma opcao do menu)
+
+//funcao para limpar o buffer do stdin
+void limpar_buffer_stdin(void){
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) { 
+        /* limpa caracteres restantes da linha */
+    }
+}
+
+//funcao que garante a leitura correta apenas de ints
+int ler_inteiro(const char *mensagem, int *valor){
+    while (1) {
+        printf("%s", mensagem);
+        if (scanf(" %d", valor) == 1) {
+            limpar_buffer_stdin();
+            return 1;
+        }
+
+        printf("Entrada invalida. Insira um numero inteiro.\n");
+        limpar_buffer_stdin();
+    }
+}
+
+//funcao que garante a leitura correta apenas de floats
+int ler_float(const char *mensagem, float *valor){
+    while (1) {
+        printf("%s", mensagem);
+        if (scanf(" %f", valor) == 1) {
+            limpar_buffer_stdin();
+            return 1;
+        }
+
+        printf("Entrada invalida. Insira um numero valido.\n");
+        limpar_buffer_stdin();
+    }
+}
+
 //create_lista_alunos
 struct lista_alunos *create_lista_alunos(void){
     struct lista_alunos *aux;
@@ -159,20 +196,39 @@ void print_lista_alunos(struct lista_alunos *list){
         printf("Nao ha alunos cadastrados.\n");
     }
 }
-//print_despesa_aluno (printar a despesa total de um aluno, total de saldo (saldo inicial - total de despesas))
-void print_despesa_aluno(struct aluno a){
-    printf("Despesas do aluno %s:\n", a.nome);
-    struct lista_despesas *current = a.despesas; //pular o header
+//print_despesa_aluno (printar os dados do aluno e todas as suas despesas)
+void print_despesa_aluno(struct lista_alunos *list_alunos, struct lista_despesas *list_despesas, int id_aluno){
+    struct lista_alunos *aluno = find_aluno_by_id(list_alunos, id_aluno);
+    struct lista_despesas *current;
     float total_despesas = 0.0;
+    int encontrou_despesa = 0;
+
+    if (aluno == NULL) {
+        printf("Aluno com numero %d nao encontrado.\n", id_aluno);
+        return;
+    }
+
+    print_aluno(aluno->al);
+    printf("Despesas do aluno %s:\n", aluno->al.nome);
+
+    current = list_despesas->next; //pular o header
     while(current != NULL){
-        printf("Valor: %.2f\n", current->desp.valor);
-        printf("Descricao: %s\n", current->desp.descricao);
-        printf("Data: %s\n", current->desp.data);
-        total_despesas += current->desp.valor;
+        if (current->desp.id_aluno == id_aluno) {
+            printf("Valor: %.2f\n", current->desp.valor);
+            printf("Descricao: %s\n", current->desp.descricao);
+            printf("Data: %s\n", current->desp.data);
+            total_despesas += current->desp.valor;
+            encontrou_despesa = 1;
+        }
         current = current->next;
     }
+
+    if (!encontrou_despesa) {
+        printf("Nao ha despesas registradas para este aluno.\n");
+    }
+
     printf("Total de despesas: %.2f\n", total_despesas);
-    printf("Saldo restante: %.2f\n", a.saldo - total_despesas);
+    printf("Saldo atual do aluno: %.2f\n", aluno->al.saldo);
 }
 //print_lista_despesas_aluno
 void print_lista_despesas_aluno(struct lista_despesas *list, int id_aluno){
@@ -203,9 +259,6 @@ void carregar_conta(struct lista_alunos *list, int id_aluno, float valor){
 
 //----funcoes de ficheiros----//
 
-//aqui estou decidindo se o ficheiro sera em Bin ou Txt. em binario fica mais completo, porem em TXT com o uso de prefixos fica mais simples, ja que eu ja sei como ler o txt.
-
-
 //gravar_dados (gravar os dados da lista de alunos e despesas para um ficheiro binario) para proxima semana// to fraco de ficheiros
 void gravar_dados(struct lista_alunos *list, struct lista_despesas *lista_despesas){
     FILE *file = fopen("dados.bin", "wb");
@@ -220,6 +273,8 @@ void gravar_dados(struct lista_alunos *list, struct lista_despesas *lista_despes
         current_aluno = current_aluno->next;
 
     }
+    //printar mensagem de sucesso
+    printf("Dados de alunos gravados com sucesso.\n");
     fclose(file);
     //Gravar a lista de despesas
     file = fopen("despesas.bin", "wb");
@@ -232,6 +287,8 @@ void gravar_dados(struct lista_alunos *list, struct lista_despesas *lista_despes
         fwrite(&(current_despesa->desp), sizeof(struct despesas), 1, file);
         current_despesa = current_despesa->next;
     }
+    //printar mensagem de sucesso
+    printf("Dados de despesas gravados com sucesso.\n");
     fclose(file);
 }
 //abrir ficheiro(com as infos de ambas as listas?) -> ler os dados do ficheiro e carregar para a memoria, vai ser chamada bastante nas funcoes de comparacao
@@ -241,6 +298,9 @@ void abrir_ficheiro(struct lista_alunos *list, struct lista_despesas *lista_desp
     if (file == NULL) {
         printf("Erro ao abrir o ficheiro para leitura.\n");
         return;
+    }
+    else {
+        printf("Ficheiro aberto com sucesso.\n");
     }
     struct aluno a1;
     while(fread(&a1, sizeof(struct aluno), 1, file) == 1){
@@ -253,6 +313,9 @@ void abrir_ficheiro(struct lista_alunos *list, struct lista_despesas *lista_desp
         printf("Erro ao abrir o ficheiro para leitura.\n");
         return;
     }
+    else {
+        printf("Ficheiro de despesas aberto com sucesso.\n");
+    }
     struct despesas d1;
     while(fread(&d1, sizeof(struct despesas), 1, file) == 1){
         insert_despesa_lista(lista_despesas, d1, d1.id_aluno);
@@ -261,15 +324,47 @@ void abrir_ficheiro(struct lista_alunos *list, struct lista_despesas *lista_desp
 }
 //----------------------------//
 
-//to-dos, para a proxima aula, implementacao extra.
-
-//verificacoes dos parametros de entrada.
-
 //----funcoes de integridade de dados----//
 //verificar se o aluno tem saldo suficiente antes de efetuar a despesa, aplicar mensagens de erro e nao deixar o programa sair em caso de erro, por exemplo, se o aluno nao existe, imprimir uma mensagem de erro e retornar ao menu
-void verificar_saldo_suficiente(struct lista_alunos *list, int id_aluno, float valor_despesa);
+void verificar_saldo_suficiente(struct lista_alunos *list, int id_aluno, float valor_despesa){
+    struct lista_alunos *aluno = find_aluno_by_id(list, id_aluno);
+
+    if (aluno == NULL) {
+        printf("Aluno com numero %d nao encontrado. Despesa nao registrada.\n", id_aluno);
+        return;
+    }
+
+    if (aluno->al.saldo < valor_despesa) {
+        printf("Saldo insuficiente para registrar a despesa. Saldo atual: %.2f\n", aluno->al.saldo);
+        return;
+    }
+}
 //procurar  alunos com despesas acima de um valor especifico, imprimir os alunos e o valor total das despesas (terei que percorrer a lista de alunos e a lista de despesas de cada aluno, comparar o valor da despesa com o valor especifico e imprimir os alunos que tiverem despesas acima desse valor)
-void procurar_plafond(struct lista_alunos *list, float valor); //tem que percorrer a lista de alunos e a lista de despesas de cada aluno, comparar o valor da despesa com o valor especifico e imprimir os alunos que tiverem despesas acima desse valor
+void procurar_plafond(struct lista_alunos *list, float valor){
+    struct lista_alunos *current_aluno = list->next; //pular o header
+    int found = 0;
+    while(current_aluno != NULL){
+        float total_despesas = 0.0;
+        struct lista_despesas *current_despesa = current_aluno->al.despesas; //pular o header
+        while(current_despesa != NULL){
+            total_despesas += current_despesa->desp.valor;
+            current_despesa = current_despesa->next;
+        }
+        if(total_despesas > valor){
+            printf("Aluno: %s, Total de despesas: %.2f\n", current_aluno->al.nome, total_despesas);
+            found = 1;
+        }
+        current_aluno = current_aluno->next;
+    }
+    if(!found){
+        printf("Nenhum aluno encontrado com despesas acima de %.2f.\n", valor);
+    }
+} //tem que percorrer a lista de alunos e a lista de despesas de cada aluno, comparar o valor da despesa com o valor especifico e imprimir os alunos que tiverem despesas acima desse valor
+
+// funcao para printar um aluno especifico a prtir do seu numero e todas as suas despesas, para facilitar a verificacao de dados e a associacao entre alunos e despesas
+void print_aluno_e_despesas(struct lista_alunos *list, struct lista_despesas *lista_despesas, int id_aluno){
+    print_despesa_aluno(list, lista_despesas, id_aluno);
+}
 
 //---------------------------------------//
 
@@ -277,5 +372,5 @@ void procurar_plafond(struct lista_alunos *list, float valor); //tem que percorr
 //2. eliminar o aluno nao elimina a lista de despesas
 //3. listar as depesas de um aluno especifico ou listar todos os alunos com seus saldos e depesas.
 //4. as depesas precisam de uma data, adicionar ao struct despesas e ao print_despesa_aluno
-//5. implementar a responsividade de erros, ao escolher listar alunos, caso nao haja alunos, imprimir uma mensagem de erro e retornar ao menu.
-//6. verificar datas, nomes e valores.
+//5. verificar datas, nomes e valores.
+//6. como verificar se as depesas precisam de um id.

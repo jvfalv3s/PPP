@@ -45,6 +45,11 @@ struct lista_despesas{
     struct lista_despesas *next;
 };
 
+//funcoes utilitarias de leitura
+void limpar_buffer_stdin(void);
+int ler_inteiro(const char *mensagem, int *valor);
+int ler_float(const char *mensagem, float *valor);
+
 //prototipos das funcoes:
 //create_lista_alunos
 struct lista_alunos *create_lista_alunos(void);
@@ -69,8 +74,10 @@ void insert_despesa(struct lista_alunos *lista_alunos, struct lista_despesas *li
 void print_aluno(struct aluno a);
 //print_lista_alunos em ordem alfabetica
 void print_lista_alunos(struct lista_alunos *list);
-//print_despesa_aluno (printar a despesa total de um aluno, total de saldo (saldo inicial - total de despesas))
-void print_despesa_aluno(struct aluno a);
+//print_despesa_aluno (printar os dados do aluno e todas as suas despesas)
+void print_despesa_aluno(struct lista_alunos *list_alunos, struct lista_despesas *list_despesas, int id_aluno);
+//print_aluno_e_despesas (mostrar um aluno especifico e suas despesas)
+void print_aluno_e_despesas(struct lista_alunos *list, struct lista_despesas *lista_despesas, int id_aluno);
 //print_lista_despesas_aluno
 void print_lista_despesas_aluno(struct lista_despesas *list, int id_aluno);
 //carregar_conta (adicionar saldo a um aluno)
