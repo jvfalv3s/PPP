@@ -51,7 +51,7 @@ int main(){
                 scanf(" %s", a1.data_nascimento);
                 ler_inteiro("Insira o ano do aluno: ", &a1.ano);
                 ler_inteiro("Insira o numero do aluno: ", &a1.numero);
-                a1.saldo = 0.0; //saldo inicial do aluno é 0
+                a1.saldo = 0.0; //saldo inicial do aluno e 0
                 insert_aluno(list, a1);//chamar funcao para adicionar aluno, enviar a struct aluno para a funcao insert_aluno
                 break;
             case '2':
