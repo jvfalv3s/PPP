@@ -32,13 +32,15 @@ int main(){
         printf("8. Abrir ficheiro\n");
         //mostrar aluno especifico e suas despesas
         printf("9. Mostrar aluno e despesas\n");
+        //procurar alunos com despesas acima de um valor especifico
+        printf("10. Procurar alunos com despesas acima de um valor especifico\n");
     
         //ler a opcao do menu, validar a opcao e chamar a funcao correspondente
-        int opcao = getchar();
-        limpar_buffer_stdin();
+        int opcao;
+        ler_inteiro("Insira a opcao: ", &opcao);
         
         switch (opcao) {
-            case '1':
+            case 1:
                 //chamar funcao para adicionar aluno
                 //primeiro chamar o utilizador para inserir os dados do aluno via scanf
                 //enviar os dados para a struct aluno que envia para a funcao insert_aluno
@@ -51,18 +53,18 @@ int main(){
                 a1.saldo = 0.0; //saldo inicial do aluno e 0
                 insert_aluno(list, a1);//chamar funcao para adicionar aluno, enviar a struct aluno para a funcao insert_aluno
                 break;
-            case '2':
+            case 2:
                 //chamar funcao para eliminar aluno
                 int key;
                 ler_inteiro("Insira o numero do aluno a eliminar: ", &key);
                 delete_aluno(list, lista_despesas, key);
                 break;
-            case '3':
+            case 3:
                 //chamar funcao para listar alunos
                 print_lista_alunos(list);
                 printf("\n");
                 break;
-            case '4':
+            case 4:
                 //chamar funcao para registrar despesa
                 struct despesas d1;
                 int id_aluno;
@@ -77,7 +79,7 @@ int main(){
                 ler_data("Insira a data da despesa (dd/mm/aaaa): ", d1.data, MAX);
                 insert_despesa(list, lista_despesas, d1, id_aluno);
                 break;
-            case '5':
+            case 5:
                 //chamar funcao para carregar saldo
                 int id_aluno_carregar;
                 float valor_carregar;
@@ -92,20 +94,20 @@ int main(){
                 
                 carregar_conta(list, id_aluno_carregar, valor_carregar);
                 break;
-            case '6':
+            case 6:
                 //chamar funcao para gravar dados para o ficheiro
                 //"puxar" os dados da memoria para o ficheiro.
                 gravar_dados(list, lista_despesas);
                 //ao chamar a funcao, printar um mensagem de sucesso ou erro, dependendo do resultado da funcao gravar_dados
                 break;
-            case '7':
+            case 7:
                 //sair do programa
                 exit(0);
-            case '8':
+            case 8:
                 //chamar funcao para abrir ficheiro e carregar os dados para a memoria
                 abrir_ficheiro(list, lista_despesas);
                 break;
-            case '9':
+            case 9:
                 //mostrar aluno especifico e todas as suas despesas
                 int id_aluno_consulta;
                 ler_inteiro("Insira o numero do aluno: ", &id_aluno_consulta);
@@ -113,6 +115,13 @@ int main(){
                 break;
             default:
                 printf("Opcao invalida. Tente novamente.\n");
+                break;
+            case 10:
+                //procurar alunos com despesas acima de um valor especifico
+                float valor_plafond;
+                ler_float("Insira o valor para procurar alunos com despesas acima desse valor: ", &valor_plafond);
+                procurar_plafond(list, valor_plafond);
+                break;
         }
     
     }
