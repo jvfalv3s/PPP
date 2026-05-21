@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<ctype.h>
 #include "aluno.h"
 
 //funcoes utilitarias de leitura (resolucao do skip ao pressionar uma opcao do menu)
@@ -38,6 +39,162 @@ int ler_float(const char *mensagem, float *valor){
 
         printf("Entrada invalida. Insira um numero valido.\n");
         limpar_buffer_stdin();
+    }
+}
+
+static int validar_nome_texto(const char *texto){
+    int i;
+    int tem_letra = 0;
+
+    for (i = 0; texto[i] != '\0'; i++) {
+        unsigned char c = (unsigned char)texto[i];
+        if (!(isalpha(c) || isspace(c))) {
+            return 0;
+        }
+        if (isalpha(c)) {
+            tem_letra = 1;
+        }
+    }
+
+    return tem_letra;
+}
+
+static int ano_bissexto(int ano){
+    return (ano % 400 == 0) || ((ano % 4 == 0) && (ano % 100 != 0));
+}
+
+static int validar_data_ddmmaaaa(const char *data){
+    int dia;
+    int mes;
+    int ano;
+    int dias_por_mes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    if (strlen(data) != 10) {
+        return 0;
+    }
+
+    if (!isdigit((unsigned char)data[0]) || !isdigit((unsigned char)data[1]) ||
+        data[2] != '/' ||
+        !isdigit((unsigned char)data[3]) || !isdigit((unsigned char)data[4]) ||
+        data[5] != '/' ||
+        !isdigit((unsigned char)data[6]) || !isdigit((unsigned char)data[7]) ||
+        !isdigit((unsigned char)data[8]) || !isdigit((unsigned char)data[9])) {
+        return 0;
+    }
+
+    dia = (data[0] - '0') * 10 + (data[1] - '0');
+    mes = (data[3] - '0') * 10 + (data[4] - '0');
+    ano = (data[6] - '0') * 1000 + (data[7] - '0') * 100 + (data[8] - '0') * 10 + (data[9] - '0');
+
+    if (mes < 1 || mes > 12) {
+        return 0;
+    }
+
+    if (mes == 2 && ano_bissexto(ano)) {
+        dias_por_mes[1] = 29;
+    }
+
+    if (dia < 1 || dia > dias_por_mes[mes - 1]) {
+        return 0;
+    }
+
+    return 1;
+}
+
+static int validar_descricao_texto(const char *texto){
+    int i;
+    int tem_conteudo = 0;
+
+    for (i = 0; texto[i] != '\0'; i++) {
+        unsigned char c = (unsigned char)texto[i];
+
+        if (!(isalnum(c) || isspace(c) || c == '-' || c == '_' || c == '.' || c == ',')) {
+            return 0;
+        }
+
+        if (!isspace(c)) {
+            tem_conteudo = 1;
+        }
+    }
+
+    return tem_conteudo;
+}
+
+int ler_texto(const char *mensagem, char *buffer, int tamanho_max){
+    char temp[MAX * 4];
+    size_t len;
+
+    while (1) {
+        printf("%s", mensagem);
+
+        if (fgets(temp, sizeof(temp), stdin) == NULL) {
+            return 0;
+        }
+
+        len = strlen(temp);
+        if (len > 0 && temp[len - 1] == '\n') {
+            temp[len - 1] = '\0';
+        } else {
+            limpar_buffer_stdin();
+        }
+
+        if (temp[0] == '\0') {
+            printf("Entrada invalida. O texto nao pode ser vazio.\n");
+            continue;
+        }
+
+        if ((int)strlen(temp) >= tamanho_max) {
+            printf("Entrada invalida. Maximo de %d caracteres.\n", tamanho_max - 1);
+            continue;
+        }
+
+        strcpy(buffer, temp);
+        return 1;
+    }
+}
+
+int ler_nome(const char *mensagem, char *buffer, int tamanho_max){
+    while (1) {
+        if (!ler_texto(mensagem, buffer, tamanho_max)) {
+            return 0;
+        }
+
+        if (!validar_nome_texto(buffer)) {
+            printf("Entrada invalida. Use apenas letras e espacos.\n");
+            continue;
+        }
+
+        return 1;
+    }
+}
+
+int ler_data(const char *mensagem, char *buffer, int tamanho_max){
+    while (1) {
+        if (!ler_texto(mensagem, buffer, tamanho_max)) {
+            return 0;
+        }
+
+        if (!validar_data_ddmmaaaa(buffer)) {
+            printf("Data invalida. Use o formato dd/mm/aaaa com uma data real.\n");
+            continue;
+        }
+
+        return 1;
+    }
+}
+
+int ler_descricao(const char *mensagem, char *buffer, int tamanho_max){
+    while (1) {
+        if (!ler_texto(mensagem, buffer, tamanho_max)) {
+            return 0;
+        }
+
+        if (!validar_descricao_texto(buffer)) {
+            printf("Descricao invalida. Use letras, numeros, espacos, '-', '_', '.' ou ','.\n");
+            continue;
+        }
+
+        return 1;
     }
 }
 
@@ -107,7 +264,31 @@ void search_despesas(struct lista_despesas *list, char *key, struct lista_despes
     }
 }
 //delete
-void delete_aluno(struct lista_alunos *list, int key){
+static void delete_despesas_do_aluno(struct lista_despesas *lista_despesas, int id_aluno){
+    struct lista_despesas *previous;
+    struct lista_despesas *current;
+
+    if (lista_despesas == NULL) {
+        return;
+    }
+
+    previous = lista_despesas;
+    current = lista_despesas->next;
+
+    while (current != NULL) {
+        if (current->desp.id_aluno == id_aluno) {
+            previous->next = current->next;
+            free(current);
+            current = previous->next;
+            continue;
+        }
+
+        previous = current;
+        current = current->next;
+    }
+}
+
+void delete_aluno(struct lista_alunos *list, struct lista_despesas *lista_despesas, int key){
     struct lista_alunos *previous = list;
     struct lista_alunos *current;
 
@@ -126,6 +307,7 @@ void delete_aluno(struct lista_alunos *list, int key){
         return;
     }
 
+    delete_despesas_do_aluno(lista_despesas, key);
     previous->next = current->next;
     free(current);
     printf("Aluno com numero %d eliminado com sucesso.\n", key);
@@ -365,12 +547,3 @@ void procurar_plafond(struct lista_alunos *list, float valor){
 void print_aluno_e_despesas(struct lista_alunos *list, struct lista_despesas *lista_despesas, int id_aluno){
     print_despesa_aluno(list, lista_despesas, id_aluno);
 }
-
-//---------------------------------------//
-
-//1. despesas nao atualizam o saldo do aluno
-//2. eliminar o aluno nao elimina a lista de despesas
-//3. listar as depesas de um aluno especifico ou listar todos os alunos com seus saldos e depesas.
-//4. as depesas precisam de uma data, adicionar ao struct despesas e ao print_despesa_aluno
-//5. verificar datas, nomes e valores.
-//6. como verificar se as depesas precisam de um id.

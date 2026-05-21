@@ -49,6 +49,10 @@ struct lista_despesas{
 void limpar_buffer_stdin(void);
 int ler_inteiro(const char *mensagem, int *valor);
 int ler_float(const char *mensagem, float *valor);
+int ler_texto(const char *mensagem, char *buffer, int tamanho_max);
+int ler_nome(const char *mensagem, char *buffer, int tamanho_max);
+int ler_data(const char *mensagem, char *buffer, int tamanho_max);
+int ler_descricao(const char *mensagem, char *buffer, int tamanho_max);
 
 //prototipos das funcoes:
 //create_lista_alunos
@@ -65,7 +69,7 @@ struct lista_despesas *clean_lista_despesas(struct lista_despesas *list);
 void search_alunos(struct lista_alunos *list, char *key, struct lista_alunos **previous,struct lista_alunos **current);
 void search_despesas(struct lista_despesas *list, char *key, struct lista_despesas **previous,struct lista_despesas **current);
 //delete
-void delete_aluno(struct lista_alunos *list, int key);
+void delete_aluno(struct lista_alunos *list, struct lista_despesas *lista_despesas, int key);
 void delete_despesa(struct lista_despesas *list, char *key);
 //insert
 void insert_aluno(struct lista_alunos *list, struct aluno a1);

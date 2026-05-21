@@ -43,12 +43,9 @@ int main(){
                 //primeiro chamar o utilizador para inserir os dados do aluno via scanf
                 //enviar os dados para a struct aluno que envia para a funcao insert_aluno
                 struct aluno a1;
-                printf("Insira o nome do aluno: ");
-                scanf(" %s", a1.nome);
-                printf("Insira o curso do aluno: ");
-                scanf(" %s", a1.curso);
-                printf("Insira a data de nascimento do aluno (dd/mm/aaaa): ");
-                scanf(" %s", a1.data_nascimento);
+                ler_nome("Insira o nome do aluno: ", a1.nome, MAX);
+                ler_nome("Insira o curso do aluno: ", a1.curso, MAX);
+                ler_data("Insira a data de nascimento do aluno (dd/mm/aaaa): ", a1.data_nascimento, MAX);
                 ler_inteiro("Insira o ano do aluno: ", &a1.ano);
                 ler_inteiro("Insira o numero do aluno: ", &a1.numero);
                 a1.saldo = 0.0; //saldo inicial do aluno e 0
@@ -58,7 +55,7 @@ int main(){
                 //chamar funcao para eliminar aluno
                 int key;
                 ler_inteiro("Insira o numero do aluno a eliminar: ", &key);
-                delete_aluno(list, key);
+                delete_aluno(list, lista_despesas, key);
                 break;
             case '3':
                 //chamar funcao para listar alunos
@@ -76,10 +73,8 @@ int main(){
                     printf("Erro: O valor da despesa deve ser positivo.\n");
                     break;
                 } 
-                printf("Insira a descricao da despesa: ");
-                scanf(" %s", d1.descricao);
-                printf("Insira a data da despesa (dd/mm/aaaa): ");
-                scanf(" %s", d1.data);
+                ler_descricao("Insira a descricao da despesa: ", d1.descricao, MAX);
+                ler_data("Insira a data da despesa (dd/mm/aaaa): ", d1.data, MAX);
                 insert_despesa(list, lista_despesas, d1, id_aluno);
                 break;
             case '5':
