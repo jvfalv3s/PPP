@@ -16,5 +16,3 @@ Projeto2025-2026.o: Projeto2025-2026.c aluno.h
 
 clean:
 	rm -f $(OBJS) $(TARGET)
-
-.PHONY: all clean

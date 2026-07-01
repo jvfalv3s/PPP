@@ -26,14 +26,12 @@ int main(){
         printf("5. Carregar saldo\n"); //aqui eu tenho que procurar um aluno especifico
         //gravar dados para o ficheiro
         printf("6. Gravar dados\n");
-        //sair do programa
-        printf("7. Sair\n");
         //abrir ficheiro e carregar os dados para a memoria
-        printf("8. Abrir ficheiro\n");
+        printf("7. Abrir ficheiro\n");
         //mostrar aluno especifico e suas despesas
-        printf("9. Mostrar aluno e despesas\n");
-        //procurar alunos com despesas acima de um valor especifico
-        printf("10. Procurar alunos com despesas acima de um valor especifico\n");
+        printf("8. Mostrar aluno e despesas\n");
+        //sair do programa
+        printf("9. Sair\n");
     
         //ler a opcao do menu, validar a opcao e chamar a funcao correspondente
         int opcao;
@@ -74,7 +72,10 @@ int main(){
                 if (d1.valor <= 0) {
                     printf("Erro: O valor da despesa deve ser positivo.\n");
                     break;
-                } 
+                }
+                if (!verificar_saldo_suficiente(list, id_aluno, d1.valor)) {
+                    break;
+                }
                 ler_descricao("Insira a descricao da despesa: ", d1.descricao, MAX);
                 ler_data("Insira a data da despesa (dd/mm/aaaa): ", d1.data, MAX);
                 insert_despesa(list, lista_despesas, d1, id_aluno);
@@ -86,7 +87,7 @@ int main(){
                 ler_inteiro("Insira o ID do aluno: ", &id_aluno_carregar);
                 ler_float("Insira o valor a carregar: ", &valor_carregar);
                 
-                // Validacao de seguranca: valor nao pode ser negativo ou zero
+                // Validacao de seguranca: valor nao pode ser negativo ou zero ( de que adianta adicionar 0 ao saldo do aluno?)
                 if (valor_carregar <= 0) {
                     printf("Erro: O valor a carregar deve ser positivo.\n");
                     break;
@@ -101,26 +102,22 @@ int main(){
                 //ao chamar a funcao, printar um mensagem de sucesso ou erro, dependendo do resultado da funcao gravar_dados
                 break;
             case 7:
-                //sair do programa
-                exit(0);
-            case 8:
                 //chamar funcao para abrir ficheiro e carregar os dados para a memoria
                 abrir_ficheiro(list, lista_despesas);
                 break;
-            case 9:
+            case 8:
                 //mostrar aluno especifico e todas as suas despesas
                 int id_aluno_consulta;
                 ler_inteiro("Insira o numero do aluno: ", &id_aluno_consulta);
                 print_aluno_e_despesas(list, lista_despesas, id_aluno_consulta);
                 break;
+            case 9:
+                //limpar a memoria e sair do programa
+                list = clean_lista_alunos(list);
+                lista_despesas = clean_lista_despesas(lista_despesas);
+                return 0;
             default:
                 printf("Opcao invalida. Tente novamente.\n");
-                break;
-            case 10:
-                //procurar alunos com despesas acima de um valor especifico
-                float valor_plafond;
-                ler_float("Insira o valor para procurar alunos com despesas acima desse valor: ", &valor_plafond);
-                procurar_plafond(list, valor_plafond);
                 break;
         }
     
